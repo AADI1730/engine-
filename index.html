@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Search Engine</title>
+</head>
+<body>
+    <input type="text" id="query" placeholder="Enter search query">
+    <button onclick="search()">Search</button>
+    <div id="results"></div>
+
+    <script>
+        function search() {
+            let query = document.getElementById("query").value;
+            fetch(`http://127.0.0.1:8000/search/?query=${query}`)
+                .then(response => response.json())
+                .then(data => {
+                    let resultsDiv = document.getElementById("results");
+                    resultsDiv.innerHTML = "";
+                    
+                    data.results.forEach(result => {
+                        let link = document.createElement("a");
+                        link.href = result.url;
+                        link.innerText = result.title;
+                        link.target = "_blank";  // Open link in new tab
+                        resultsDiv.appendChild(link);
+                        resultsDiv.appendChild(document.createElement("br"));
+                    });
+                });
+        }
+    </script>
+</body>
+</html>
